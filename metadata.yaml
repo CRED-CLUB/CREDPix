@@ -1,5 +1,5 @@
 homepage: "https://github.com/CRED-CLUB/CREDPix/blob/master/README.md"
 documentation: "https://github.com/CRED-CLUB/CREDPix/blob/master/README.md"
 versions:
-  - sha: xxx
+  - sha: 155d1442677af267b014346a8e3e8c33c3de4cd6
     changeNotes: Initial release.
