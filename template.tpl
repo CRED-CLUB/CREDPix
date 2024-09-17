@@ -1,4 +1,4 @@
-﻿___TERMS_OF_SERVICE___
+___TERMS_OF_SERVICE___
 
 By creating or modifying this file you agree to Google Tag Manager's Community
 Template Gallery Developer Terms of Service available at
@@ -250,6 +250,7 @@ const copyFromWindow = require('copyFromWindow');
 const callInWindow = require('callInWindow');
 const makeTableMap = require('makeTableMap');
 const createQueue = require('createQueue');
+const templateStorage = require('templateStorage');
 
 var pixelTracker = null;
 
@@ -268,15 +269,27 @@ const getTracker = () => {
   data.gtmOnSuccess();
 };
 
-injectScript('https://web.apploader.in/pixel/v1.0.0/index.iife.js', getTracker, data.gtmOnFailure, 'credPixel');
+if (!templateStorage.getItem('alreadyRan')) {
+  injectScript(
+  'https://web.apploader.in/pixel/v1.0.0/index.iife.js',
+  getTracker,
+  () => {
+    templateStorage.setItem('alreadyRan', false);
+    data.gtmOnFailure();
+  },
+  'credPixel'
+);
+}
+
+templateStorage.setItem('alreadyRan', true);
 
 const trackPixelEvent = function(event_name, custom_data , user_data) {
   custom_data = custom_data || {};
   user_data = user_data || {};
-  const eventDetails = { 
-    event_name: event_name, 
-    custom_data: custom_data, 
-    user_data: user_data 
+  const eventDetails = {
+    event_name: event_name,
+    custom_data: custom_data,
+    user_data: user_data
   };
   if(pixelTracker) {
     pixelTracker.trackEvent([eventDetails]);
@@ -450,6 +463,16 @@ ___WEB_PERMISSIONS___
       "isEditedByUser": true
     },
     "isRequired": true
+  },
+  {
+    "instance": {
+      "key": {
+        "publicId": "access_template_storage",
+        "versionId": "1"
+      },
+      "param": []
+    },
+    "isRequired": true
   }
 ]
 
@@ -461,6 +484,5 @@ scenarios: []
 
 ___NOTES___
 
-Created on 14/09/2024, 15:45:17
-
+Created on 16/09/2024, 20:39:20
 
